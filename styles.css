@@ -98,7 +98,7 @@ img[src$="portrait.png"] { object-fit: contain; }
   transform: translateX(-50%) translateY(var(--scroll-y, 0px));
   pointer-events: none;
 }
-.hero-portrait { object-fit: contain; object-position: center bottom; filter: grayscale(100%); }
+.hero-portrait { object-fit: contain; object-position: center bottom;  }
 .hero-manifesto { position: absolute; z-index: 6; left: 7.3vw; top: 39.1vw; display: grid; gap: .55vw; color: var(--white); }
 .hero-manifesto strong { font-size: clamp(14px,1.7vw,26px); line-height: 1.05; }
 .hero-manifesto strong:nth-child(2) { font-size: clamp(16px,2.1vw,32px); }
