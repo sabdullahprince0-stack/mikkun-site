@@ -6,21 +6,10 @@
   <meta name="theme-color" content="#050505" />
   <meta name="description" content="MIKKUN — Prince Mikael O. Sabdullah, multidisciplinary creative from the Philippines." />
   <title>MIKKUN — Multidisciplinary Creative</title>
-  <link rel="stylesheet" href="styles.css?v=20261019-2" />
-  <script defer src="script.js?v=20261019-2"></script>
+  <link rel="stylesheet" href="styles.css?v=20261020-motion" />
+  <script defer src="script.js?v=20261020-motion"></script>
 </head>
 <body>
-  <header class="site-header" data-reveal="nav">
-    <a class="brand" href="#top" aria-label="MIKKUN home">MIKKUN<span>®</span></a>
-    <nav class="desktop-nav" aria-label="Primary navigation">
-      <a href="#work">WORK</a>
-      <a href="#about">ABOUT</a>
-      <a href="#side-quests">SIDE QUESTS</a>
-      <a href="#contact">CONTACT</a>
-    </nav>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">MENU</button>
-  </header>
-
   <div class="mobile-menu" id="mobile-menu" hidden>
     <a href="#work">WORK</a>
     <a href="#about">ABOUT</a>
@@ -30,6 +19,16 @@
 
   <main id="top">
     <section class="hero" aria-labelledby="hero-title">
+      <header class="site-header" role="banner" data-reveal="nav">
+        <a class="brand" href="#top" aria-label="MIKKUN home">MIKKUN<span>®</span></a>
+        <nav class="desktop-nav" aria-label="Primary navigation">
+          <a href="#work">WORK</a>
+          <a href="#about">ABOUT</a>
+          <a href="#side-quests">SIDE QUESTS</a>
+          <a href="#contact">CONTACT</a>
+        </nav>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">MENU</button>
+      </header>
       <div class="hero-gradient" aria-hidden="true"></div>
       <div class="hero-grain" aria-hidden="true"></div>
 
@@ -43,7 +42,7 @@
       <p class="hero-mobile-meta mobile-only" data-reveal="meta">PHILIPPINES / DESIGN / MOTION / WEB</p>
 
       <div class="hero-portrait-wrap" data-reveal="portrait">
-        <img class="hero-portrait" src="assets/portrait.webp" alt="Portrait of Prince Mikael O. Sabdullah" />
+        <img class="hero-portrait" src="assets/portrait.png" alt="Portrait of Prince Mikael O. Sabdullah" />
       </div>
 
       <div class="hero-manifesto" data-reveal="copy">
@@ -76,19 +75,19 @@
             <a class="project-link" href="woodstones.html">VIEW PROJECT ↗</a>
           </div>
           <div class="project-art frame-red">
-            <img src="assets/woodstones.webp" alt="WoodStones website preview" />
+            <img src="assets/woodstones.png" alt="WoodStones website preview" />
           </div>
         </article>
 
         <article class="project project-dbasement">
           <div class="project-art poster-art">
-            <img src="assets/dbasement.webp" alt="D’Basement Open Mic poster" />
+            <img src="assets/dbasement.png" alt="D’Basement Open Mic poster" />
           </div>
           <div class="project-copy">
             <p class="project-year">02 / 2025—2026</p>
             <h3 class="serif">D’BASEMENT</h3>
             <p class="project-type">SOCIAL MEDIA / GRAPHIC DESIGN / VIDEO</p>
-            <p class="project-description">A year of visual content for a local Davao music venue — pubmats, event campaigns, captions, posting, and live-performance edits.</p>
+            <p class="project-description">A year of visual content for a local Davao music venue —<br class="desktop-only"> pubmats, event campaigns, captions, posting, and live-performance edits.</p>
             <a class="project-link" href="dbasement.html">VIEW PROJECT ↗</a>
           </div>
         </article>
@@ -102,7 +101,7 @@
             <a class="project-link" href="haniyah.html">VIEW PROJECT ↗</a>
           </div>
           <div class="project-art haniyah-art">
-            <img src="assets/haniyah.webp" alt="HANIYAH perfume website preview" />
+            <img src="assets/haniyah.png" alt="HANIYAH perfume website preview" />
           </div>
         </article>
       </div>
@@ -111,12 +110,15 @@
     <section class="about" id="about">
       <div class="section-inner about-grid">
         <div class="about-photo frame-red">
-          <img src="assets/about.webp" alt="Portrait of Mikkun" />
+          <picture>
+            <source media="(max-width:760px)" srcset="assets/about-mobile.jpg">
+            <img src="assets/about.png" alt="Portrait of Mikkun" />
+          </picture>
         </div>
         <div class="about-copy">
           <p class="eyebrow">02 / ABOUT</p>
           <h2>WHO THE HELL<br><span>IS MIKKUN?</span></h2>
-          <p class="lead">I’m Prince Mikael O. Sabdullah, also known as Mikkun — a multidisciplinary creative from the Philippines.</p>
+          <p class="lead">I’m Prince Mikael O. Sabdullah, also known as Mikkun —<br class="desktop-only"> a multidisciplinary creative from the Philippines.</p>
           <p class="about-body">I like exploring how an idea changes when it moves between graphic design, video, branding, web, photography, and other forms of visual expression.</p>
           <p class="about-process">Most of my process begins with experimentation.<span class="mobile-only"> I try things, rearrange them, question them, sometimes ruin them, and eventually discover what works.</span></p>
           <div class="about-mantra mobile-only"><b>MAKE.</b> <b>BREAK.</b> <b>LEARN.</b> <b>REPEAT.</b></div>
@@ -136,17 +138,17 @@
 
         <div class="quest-grid">
           <a class="quest-card quest-running" href="side-quests.html#fitness">
-            <div class="quest-photo"><img src="assets/running.webp" alt="Running" /></div>
+            <div class="quest-photo"><img src="assets/running.png" alt="Running" /></div>
             <h3>RUNNING</h3>
             <p>5K / NIGHT RUNS<span class="desktop-only"> / ONE MORE KM</span></p>
           </a>
           <a class="quest-card quest-racket" href="side-quests.html#racket">
-            <div class="quest-photo"><img src="assets/racket.webp" alt="Racket sports" /></div>
+            <div class="quest-photo"><img src="assets/racket.png" alt="Racket sports" /></div>
             <h3>RACKET SPORTS</h3>
             <p>PICKLEBALL / TENNIS<span class="desktop-only"> / COURT DAYS</span></p>
           </a>
           <a class="quest-card quest-music" href="side-quests.html#music">
-            <div class="quest-photo"><img src="assets/music.webp" alt="Music performance" /></div>
+            <div class="quest-photo"><img src="assets/music.png" alt="Music performance" /></div>
             <h3>MUSIC</h3>
             <p>VOCALS / GUITAR / LIVE</p>
           </a>

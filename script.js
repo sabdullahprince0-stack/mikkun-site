@@ -1,54 +1,266 @@
-const body = document.body;
-window.addEventListener('DOMContentLoaded', () => requestAnimationFrame(() => body.classList.add('is-ready')));
-
 const menuButton = document.querySelector('.menu-toggle');
 const mobileMenu = document.querySelector('#mobile-menu');
-
+const closeMenu = () => {
+  if (mobileMenu) mobileMenu.hidden = true;
+  menuButton?.setAttribute('aria-expanded', 'false');
+};
 menuButton?.addEventListener('click', () => {
   const open = menuButton.getAttribute('aria-expanded') === 'true';
   menuButton.setAttribute('aria-expanded', String(!open));
-  mobileMenu.hidden = open;
+  if (mobileMenu) mobileMenu.hidden = open;
 });
-mobileMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
-  mobileMenu.hidden = true;
-  menuButton?.setAttribute('aria-expanded', 'false');
-}));
+mobileMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
 
+// Each reveal returns to the existing CSS geometry. No wrappers, text splitting,
+// or layout properties are animated; translate handles the separate hero depth.
 const hero = document.querySelector('.hero');
-const portrait = document.querySelector('.hero-portrait-wrap');
-const logo = document.querySelector('.hero-logo');
-const multi = document.querySelector('.hero-multi');
-const creative = document.querySelector('.hero-creative');
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const finePointer = matchMedia('(pointer:fine)').matches;
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+const mobile = matchMedia('(max-width:760px)');
+const desktopPointer = matchMedia('(min-width:761px) and (hover:hover) and (pointer:fine)');
+const active = new Set();
+const pending = new Map();
+const seen = new WeakSet();
+const editorial = 'cubic-bezier(.22,.72,.18,1)';
+const elegant = 'cubic-bezier(.2,.58,.22,1)';
+const open = 'inset(-20% -20% -20% -20%)';
+const masks = {
+  left: [{ clipPath: 'inset(-20% 100% -20% -20%)' }, { clipPath: open }],
+  right: [{ clipPath: 'inset(-20% -20% -20% 100%)' }, { clipPath: open }],
+  down: [{ clipPath: 'inset(-20% -20% 100% -20%)' }, { clipPath: open }],
+  up: [{ clipPath: 'inset(100% -20% -20% -20%)' }, { clipPath: open }],
+  ink: [{ opacity: 0 }, { opacity: 1 }],
+};
 
-if (finePointer && !reduced && hero && portrait && logo) {
-  hero.addEventListener('pointermove', (event) => {
-    const r = hero.getBoundingClientRect();
-    const nx = (event.clientX - r.left) / r.width - .5;
-    const ny = (event.clientY - r.top) / r.height - .5;
-    portrait.style.translate = `${nx * -5}px ${ny * -3}px`;
-    logo.style.translate = `${nx * 2.2}px ${ny * 1.4}px`;
+function play(element, frames, duration, delay = 0, easing = editorial, id = '') {
+  if (!element) return;
+  if (reduced.matches) {
+    element.removeAttribute('data-motion-pending');
+    return;
+  }
+  const keyframes = frames.map(keyframe => ({ opacity: 1, ...keyframe }));
+  // Keep delayed cuts entirely blank, including antialiased glyph edges at x=0.
+  if (frames[0].clipPath && frames[0].opacity === undefined) {
+    keyframes[0] = { ...keyframes[0], opacity: 0, offset: 0 };
+    keyframes.splice(1, 0, { ...keyframes[0], opacity: 1, offset: .006 });
+    keyframes[keyframes.length - 1].offset = 1;
+  }
+  const animation = element.animate(keyframes, {
+    duration: duration * (mobile.matches ? .78 : 1),
+    delay: delay * (mobile.matches ? .72 : 1), easing, fill: 'both',
   });
-  hero.addEventListener('pointerleave', () => {
-    portrait.style.translate = '';
-    logo.style.translate = '';
+  animation.id = id;
+  active.add(animation);
+  animation.finished.then(() => {
+    element.removeAttribute('data-motion-pending');
+    // Cancel the finished effect so masks and compositing layers do not linger.
+    animation.cancel();
+  }).catch(() => {}).finally(() => active.delete(animation));
+  return animation;
+}
+
+function queue(selector, frames, duration, delay = 0, easing = editorial, scene = 'section') {
+  document.querySelectorAll(selector).forEach((element, index) => {
+    pending.set(element, { frames, duration, delay: delay + index * 65, easing,
+      id: `${scene}:${element.className || element.tagName}` });
+    if (!reduced.matches) element.setAttribute('data-motion-pending', '');
   });
 }
 
-if (!reduced) {
-  let ticking = false;
-  const updateScroll = () => {
-    const y = Math.min(window.scrollY, window.innerHeight);
-    const mobile = window.innerWidth <= 760;
-    if (portrait) portrait.style.setProperty('--scroll-y', `${y * (mobile ? -.012 : -.026)}px`);
-    if (multi) multi.style.translate = `${y * (mobile ? -.006 : -.013)}px 0`;
-    if (creative) creative.style.translate = `${y * (mobile ? .006 : .013)}px 0`;
-    ticking = false;
-  };
-  window.addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(updateScroll);
-  }, {passive:true});
+// Architectural registration: horizontal planes and short, measured intervals.
+queue('.project-woodstones .project-art', [
+  { clipPath: 'inset(-20% 100% -20% -20%)', transform: 'translateX(10px)' },
+  { clipPath: open, transform: 'none' },
+], 820, 60, editorial, 'woodstones');
+queue('.project-woodstones h3', masks.left, 620, 0, editorial, 'woodstones');
+queue('.project-woodstones .project-year, .project-woodstones .project-type', masks.left, 420, 40, editorial, 'woodstones');
+queue('.project-woodstones .project-description, .project-woodstones .project-link', masks.ink, 500, 120, editorial, 'woodstones');
+
+// Poster registration: a quick diagonal arrival, followed by hard opposing cuts.
+queue('.project-dbasement .project-art', [
+  { opacity: 0, clipPath: 'inset(-20% -20% 100% -20%)', transform: 'translate(-12px, 8px) rotate(-.45deg)' },
+  { opacity: 1, clipPath: open, transform: 'none' },
+], 470, 0, 'cubic-bezier(.16,.85,.25,1)', 'dbasement');
+queue('.project-dbasement h3', [
+  { clipPath: 'inset(-20% -20% -20% 100%)', transform: 'translateX(-8px)' },
+  { clipPath: open, transform: 'none' },
+], 380, 40, editorial, 'dbasement');
+queue('.project-dbasement .project-year, .project-dbasement .project-type, .project-dbasement .project-description, .project-dbasement .project-link', masks.right, 360, 30, editorial, 'dbasement');
+
+// Perfume pacing: a long vertical aperture and an almost imperceptible settle.
+queue('.project-haniyah .project-art', [
+  { opacity: 0, clipPath: 'inset(-20% -20% 100% -20%)', transform: 'scale(1.018)' },
+  { opacity: 1, clipPath: open, transform: 'none' },
+], 1280, 80, elegant, 'haniyah');
+queue('.project-haniyah h3', masks.left, 1000, 80, elegant, 'haniyah');
+queue('.project-haniyah .project-year, .project-haniyah .project-type, .project-haniyah .project-description, .project-haniyah .project-link', masks.ink, 850, 140, elegant, 'haniyah');
+
+// About reads like a magazine spread: photo aperture, headline, then paragraphs.
+queue('.about-photo', masks.down, 1000, 0, editorial, 'about');
+queue('.about h2', masks.left, 800, 100, editorial, 'about');
+queue('.about .eyebrow, .about .lead, .about-body, .about-process, .about-mantra, .tools-label, .small-caps, .tools', masks.left, 620, 130, editorial, 'about');
+
+// A little asymmetry for the personal material, resolving to the approved grid.
+document.querySelectorAll('.quest-card').forEach((element, index) => {
+  const x = mobile.matches ? [0, 2, -2][index] : [-7, 4, 8][index];
+  const y = mobile.matches ? [9, 13, 7][index] : [14, 22, 11][index];
+  pending.set(element, { frames: [
+    { opacity: 0, clipPath: 'inset(-20% -20% 100% -20%)', transform: `translate(${x}px, ${y}px)` },
+    { opacity: 1, clipPath: open, transform: 'none' },
+  ], duration: 680, delay: index * 110, easing: editorial, id: `quests:card-${index}` });
+  if (!reduced.matches) element.setAttribute('data-motion-pending', '');
+});
+queue('.side-quests .eyebrow, .side-quests h2, .side-quests .section-copy, .side-quest-enter', masks.left, 620, 40, editorial, 'quests');
+
+// Closing title: one decisive bottom-to-top cut, then the contact details.
+queue('.contact h2', [
+  { clipPath: 'inset(100% -20% -20% -20%)', transform: 'translateY(18px)' },
+  { clipPath: open, transform: 'none' },
+], 860, 0, 'cubic-bezier(.18,.78,.18,1)', 'contact');
+queue('.contact .eyebrow, .contact-blurb, .email, .socials, .footer-line, .mobile-footer', masks.left, 600, 220, editorial, 'contact');
+queue('.manifesto h2, .work-title', masks.left, 850, 0, editorial, 'chapter');
+queue('.manifesto p, .work-eyebrow', masks.ink, 500, 100, editorial, 'chapter');
+
+let revealObserver;
+function observeReveals() {
+  if (reduced.matches || !('IntersectionObserver' in window)) {
+    pending.forEach((_, element) => element.removeAttribute('data-motion-pending'));
+    return;
+  }
+  revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const element = entry.target;
+      const effect = pending.get(element);
+      revealObserver.unobserve(element);
+      if (!effect || seen.has(element)) return;
+      seen.add(element);
+      play(element, effect.frames, effect.duration, effect.delay, effect.easing, effect.id);
+    });
+  }, { threshold: .08, rootMargin: '0px 0px -6% 0px' });
+  pending.forEach((_, element) => { if (!seen.has(element)) revealObserver.observe(element); });
 }
+
+// Entrance and depth use separate transform channels, avoiding competing effects.
+const depth = ['.hero-portrait-wrap', '.hero-logo', '.hero-multi', '.hero-creative']
+  .map(selector => document.querySelector(selector));
+let heroVisible = true;
+let heroEntered = false;
+let frame = 0;
+let lastTime = 0;
+let bounds;
+let scrollPosition = window.scrollY;
+const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+function measure() {
+  if (!hero) return;
+  const rect = hero.getBoundingClientRect();
+  bounds = { left: rect.left, top: rect.top + window.scrollY, width: rect.width, height: rect.height };
+  scrollPosition = window.scrollY;
+  requestDepth();
+}
+function requestDepth() {
+  if (!frame && heroVisible && heroEntered && !reduced.matches && !document.hidden) {
+    frame = requestAnimationFrame(updateDepth);
+  }
+}
+function updateDepth(time) {
+  frame = 0;
+  if (!bounds || reduced.matches || !heroVisible || document.hidden) return;
+  const blend = 1 - Math.exp(-Math.min(time - (lastTime || time - 16), 64) / 85);
+  lastTime = time;
+  const canPoint = desktopPointer.matches;
+  if (!canPoint) pointer.x = pointer.y = 0;
+  pointer.x += ((canPoint ? pointer.targetX : 0) - pointer.x) * blend;
+  pointer.y += ((canPoint ? pointer.targetY : 0) - pointer.y) * blend;
+  const progress = Math.max(0, Math.min(1, (scrollPosition - bounds.top) / bounds.height));
+  const factor = mobile.matches ? .42 : 1;
+  const values = [
+    [-pointer.x * 5, -pointer.y * 3.5 - progress * 26 * factor],
+    [pointer.x * 2.2, pointer.y * 1.2 - progress * 4 * factor],
+    [-pointer.x * 1.6 - progress * 9 * factor, -progress * 8 * factor],
+    [pointer.x * 2 + progress * 8 * factor, progress * 5 * factor],
+  ];
+  depth.forEach((element, i) => {
+    if (element) element.style.translate = `${values[i][0].toFixed(3)}px ${values[i][1].toFixed(3)}px`;
+  });
+  if (Math.abs(pointer.x - pointer.targetX) + Math.abs(pointer.y - pointer.targetY) > .002 && canPoint) requestDepth();
+}
+hero?.addEventListener('pointermove', event => {
+  if (!desktopPointer.matches || !bounds || reduced.matches) return;
+  pointer.targetX = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
+  pointer.targetY = Math.max(-1, Math.min(1, (event.clientY - bounds.top + scrollPosition) / bounds.height * 2 - 1));
+  requestDepth();
+});
+hero?.addEventListener('pointerleave', () => { pointer.targetX = pointer.targetY = 0; requestDepth(); });
+window.addEventListener('scroll', () => { scrollPosition = window.scrollY; requestDepth(); }, { passive: true });
+window.addEventListener('resize', measure, { passive: true });
+desktopPointer.addEventListener('change', () => { pointer.targetX = pointer.targetY = 0; requestDepth(); });
+
+async function enterHero() {
+  if (!hero || reduced.matches) { heroEntered = true; return; }
+  const entrants = hero.querySelectorAll('[data-reveal]:not([data-reveal="copy"]), .hero-manifesto strong, .logo-scratches i');
+  entrants.forEach(element => element.setAttribute('data-motion-pending', ''));
+  let timer;
+  await Promise.race([
+    Promise.allSettled([document.fonts.ready, hero.querySelector('img')?.decode()]),
+    new Promise(resolve => { timer = setTimeout(resolve, 1800); }),
+  ]);
+  clearTimeout(timer);
+  if (reduced.matches) { entrants.forEach(element => element.removeAttribute('data-motion-pending')); return; }
+  hero.classList.add('hero-entering');
+  const find = selector => hero.querySelector(selector);
+  play(find('.site-header'), masks.ink, 360, 0, editorial, 'hero:nav');
+  play(find('.hero-logo'), masks.left, 880, 100, editorial, 'hero:logo');
+  play(find('.hero-multi'), masks.left, 950, 260, editorial, 'hero:multi');
+  play(find('.hero-creative'), masks.right, 840, 500, editorial, 'hero:creative');
+  const portrait = play(find('.hero-portrait-wrap'), [
+    { opacity: 0, transform: `translateY(${mobile.matches ? 26 : 36}px) scale(${mobile.matches ? 1.03 : 1.035})` },
+    { opacity: 1, transform: 'none' },
+  ], 1120, 380, elegant, 'hero:portrait');
+  hero.querySelectorAll('.hero-manifesto strong').forEach((element, index) => {
+    play(element, masks.left, 560, 1010 + index * 120, editorial, `hero:copy-${index}`);
+  });
+  hero.querySelectorAll('[data-reveal="meta"]').forEach((element, index) => {
+    play(element, masks.ink, 460, 1220 + index * 55, editorial, `hero:meta-${index}`);
+  });
+  hero.querySelectorAll('.logo-scratches i').forEach((element, index) => {
+    play(element, masks.left, 300, 720 + index * 55, editorial, `hero:scratch-${index}`);
+  });
+  portrait?.finished.then(() => {
+    heroEntered = true;
+    hero.classList.remove('hero-entering');
+    requestDepth();
+  }).catch(() => {});
+}
+
+function stopMotion() {
+  active.forEach(animation => animation.cancel());
+  revealObserver?.disconnect();
+  document.querySelectorAll('[data-motion-pending]').forEach(element => element.removeAttribute('data-motion-pending'));
+  pending.forEach((_, element) => seen.add(element));
+  hero?.classList.remove('hero-entering');
+  heroEntered = true;
+  cancelAnimationFrame(frame);
+  frame = 0;
+  pointer.x = pointer.y = pointer.targetX = pointer.targetY = 0;
+  depth.forEach(element => element?.style.removeProperty('translate'));
+}
+reduced.addEventListener('change', () => {
+  if (reduced.matches) stopMotion();
+  else requestDepth();
+});
+document.addEventListener('visibilitychange', () => {
+  active.forEach(animation => document.hidden ? animation.pause() : animation.play());
+  document.body.classList.toggle('motion-suspended', document.hidden);
+  if (!document.hidden) { lastTime = 0; requestDepth(); }
+});
+if (hero && 'IntersectionObserver' in window) {
+  new IntersectionObserver(([entry]) => {
+    heroVisible = entry.isIntersecting;
+    hero.classList.toggle('hero-is-visible', heroVisible);
+    if (heroVisible) requestDepth();
+  }).observe(hero);
+}
+measure();
+observeReveals();
+enterHero();
