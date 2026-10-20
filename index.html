@@ -9,6 +9,8 @@
   <title>MIKKUN — Multidisciplinary Creative</title>
   <link rel="stylesheet" href="styles.css?v=20261020-motion" />
   <script defer src="script.js?v=20261020-motion"></script>
+  <link rel="stylesheet" href="interactions.css" />
+  <script defer src="interactions.js"></script>
 </head>
 <body>
   <div class="mobile-menu" id="mobile-menu" hidden>
@@ -43,7 +45,7 @@
       <p class="hero-mobile-meta mobile-only" data-reveal="meta">PHILIPPINES / DESIGN / MOTION / WEB</p>
 
       <div class="hero-portrait-wrap" data-reveal="portrait">
-        <img class="hero-portrait" src="assets/portrait.png" alt="Portrait of Prince Mikael O. Sabdullah" />
+        <img class="hero-portrait" src="assets/portrait-clean.png" alt="Portrait of Prince Mikael O. Sabdullah" />
       </div>
 
       <div class="hero-manifesto" data-reveal="copy">
@@ -75,15 +77,15 @@
             <p class="project-description">A digital home for a modular cabinetry and interior-solutions business, built around clarity, craftsmanship, and easier client inquiries.</p>
             <a class="project-link" href="woodstones.html">VIEW PROJECT ↗</a>
           </div>
-          <div class="project-art frame-red">
+          <a class="project-art frame-red" href="woodstones.html" aria-label="View WoodStones project">
             <img src="assets/woodstones.png" alt="WoodStones website preview" />
-          </div>
+          </a>
         </article>
 
         <article class="project project-dbasement">
-          <div class="project-art poster-art">
+          <a class="project-art poster-art" href="dbasement.html" aria-label="View D’Basement project">
             <img src="assets/dbasement.png" alt="D’Basement Open Mic poster" />
-          </div>
+          </a>
           <div class="project-copy">
             <p class="project-year">02 / 2025—2026</p>
             <h3 class="serif">D’BASEMENT</h3>
@@ -101,9 +103,9 @@
             <p class="project-description">A perfume brand developed from identity to digital catalog — logo, product imagery, fragrance copy, and web presentation.</p>
             <a class="project-link" href="haniyah.html">VIEW PROJECT ↗</a>
           </div>
-          <div class="project-art haniyah-art">
+          <a class="project-art haniyah-art" href="haniyah.html" aria-label="View HANIYAH project">
             <img src="assets/haniyah.png" alt="HANIYAH perfume website preview" />
-          </div>
+          </a>
         </article>
       </div>
     </section>

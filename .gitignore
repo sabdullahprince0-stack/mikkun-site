@@ -1,1 +1,12 @@
 .local-review/
+
+# Local source/master videos. Only assets/videos/web/ is published.
+/assets/videos/*.mp4
+
+# Local development, QA, recordings, and source asset archives.
+/tools/
+/*REVIEW.md
+/VIDEO-WEB-DELIVERY.md
+/assets/mikkun-original-assets/
+/assets/portrait.png
+/assets/.gitkeep

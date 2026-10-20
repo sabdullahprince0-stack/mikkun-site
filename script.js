@@ -1,16 +1,18 @@
 const menuButton = document.querySelector('.menu-toggle');
 const mobileMenu = document.querySelector('#mobile-menu');
-const closeMenu = () => {
+const closeMenu = (restoreFocus = false) => {
   if (mobileMenu) mobileMenu.hidden = true;
   menuButton?.setAttribute('aria-expanded', 'false');
+  if (restoreFocus) menuButton?.focus({preventScroll:true});
 };
 menuButton?.addEventListener('click', () => {
   const open = menuButton.getAttribute('aria-expanded') === 'true';
   menuButton.setAttribute('aria-expanded', String(!open));
   if (mobileMenu) mobileMenu.hidden = open;
+  if (!open) mobileMenu?.querySelector('a')?.focus({preventScroll:true});
 });
 mobileMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+document.addEventListener('keydown', event => { if (event.key === 'Escape' && !mobileMenu?.hidden) closeMenu(true); });
 
 // Each reveal returns to the existing CSS geometry. No wrappers, text splitting,
 // or layout properties are animated; translate handles the separate hero depth.
@@ -175,14 +177,23 @@ function updateDepth(time) {
   const progress = Math.max(0, Math.min(1, (scrollPosition - bounds.top) / bounds.height));
   const factor = mobile.matches ? .42 : 1;
   const values = [
-    [-pointer.x * 5, -pointer.y * 3.5 - progress * 26 * factor],
-    [pointer.x * 2.2, pointer.y * 1.2 - progress * 4 * factor],
-    [-pointer.x * 1.6 - progress * 9 * factor, -progress * 8 * factor],
-    [pointer.x * 2 + progress * 8 * factor, progress * 5 * factor],
+    [-pointer.x * 7.5, -pointer.y * 5 - progress * 30 * factor],
+    [pointer.x * 5, pointer.y * 2.2 - progress * 5 * factor],
+    [-pointer.x * 3.4 - progress * 10 * factor, -progress * 9 * factor],
+    [pointer.x * 4.5 + progress * 9 * factor, progress * 6 * factor],
   ];
   depth.forEach((element, i) => {
     if (element) element.style.translate = `${values[i][0].toFixed(3)}px ${values[i][1].toFixed(3)}px`;
   });
+  const lightX = Number((pointer.x * 5).toFixed(2));
+  const lightY = Number((pointer.y * 3 - progress * 5 * factor).toFixed(2));
+  hero.style.setProperty('--light-x', `${lightX}px`);
+  hero.style.setProperty('--light-y', `${lightY}px`);
+  // Only overscan while moving, so the gradient cannot expose the hero's backing.
+  const cover = lightX || lightY ? 1 + 2 * Math.max(Math.abs(lightX)/bounds.width, Math.abs(lightY)/(bounds.height * (mobile.matches ? .84 : 1))) + .002 : 1;
+  hero.style.setProperty('--light-scale', cover.toFixed(5));
+  hero.style.setProperty('--ink-angle', `${(pointer.x * -.18).toFixed(3)}deg`);
+  hero.style.setProperty('--scratch-x', `${(pointer.x * -8).toFixed(2)}px`);
   if (Math.abs(pointer.x - pointer.targetX) + Math.abs(pointer.y - pointer.targetY) > .002 && canPoint) requestDepth();
 }
 hero?.addEventListener('pointermove', event => {
@@ -210,7 +221,11 @@ async function enterHero() {
   hero.classList.add('hero-entering');
   const find = selector => hero.querySelector(selector);
   play(find('.site-header'), masks.ink, 360, 0, editorial, 'hero:nav');
-  play(find('.hero-logo'), masks.left, 880, 100, editorial, 'hero:logo');
+  play(find('.hero-logo'), [
+    { clipPath:'polygon(0 0,0 0,0 33%,0 33%,0 66%,0 66%,0 100%,0 100%)' },
+    { clipPath:'polygon(0 0,100% 0,100% 33%,72% 33%,72% 66%,88% 66%,88% 100%,0 100%)' },
+    { clipPath:'polygon(0 0,100% 0,100% 33%,100% 33%,100% 66%,100% 66%,100% 100%,0 100%)' },
+  ], 1160, 80, editorial, 'hero:logo');
   play(find('.hero-multi'), masks.left, 950, 260, editorial, 'hero:multi');
   play(find('.hero-creative'), masks.right, 840, 500, editorial, 'hero:creative');
   const portrait = play(find('.hero-portrait-wrap'), [
@@ -244,6 +259,7 @@ function stopMotion() {
   frame = 0;
   pointer.x = pointer.y = pointer.targetX = pointer.targetY = 0;
   depth.forEach(element => element?.style.removeProperty('translate'));
+  ['--light-x','--light-y','--light-scale','--ink-angle','--scratch-x'].forEach(p=>hero?.style.removeProperty(p));
 }
 reduced.addEventListener('change', () => {
   if (reduced.matches) stopMotion();

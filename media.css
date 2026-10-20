@@ -1,0 +1,9 @@
+/* Media occupies the approved frame; source pixels retain their own aspect ratio. */
+.portfolio-media{isolation:isolate}
+.portfolio-media__video{position:absolute;inset:0;width:100%;height:calc(100% - var(--media-caption,0px));object-fit:contain;background:#080808;z-index:2;visibility:hidden}
+.portfolio-media.is-video-active .portfolio-media__video{visibility:visible}
+.portfolio-media .motion-preview{height:calc(100% - var(--media-caption,0px));object-fit:contain;background:#080808}
+.portfolio-media__toggle{position:absolute;z-index:4;left:50%;top:calc((100% - var(--media-caption,0px))/2);translate:-50% -50%;min-width:100px;min-height:44px;padding:12px 16px;border:1px solid #c1121f;background:#080808e8;color:#f1ece5;cursor:pointer;font:600 11px/1.3 var(--font-body);letter-spacing:.06em}
+.portfolio-media.is-video-active .portfolio-media__toggle{top:10px;left:10px;translate:none;min-width:80px}
+.portfolio-media__toggle:focus-visible{outline:2px solid #f1ece5;outline-offset:4px}
+.portfolio-media__status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
