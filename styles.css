@@ -68,7 +68,7 @@ picture{display:block;width:100%;height:100%}
 .hero-manifesto{position:absolute;z-index:8;left:7.2cqw;top:32.3cqw;display:grid;gap:.78cqw;color:var(--white)}
 .hero-manifesto strong{font-size:1.689cqw;line-height:1.04}
 .hero-manifesto strong:nth-child(2){font-size:2.122cqw}
-.hero-manifesto em{color:var(--red);font-style:normal}
+.hero-manifesto em{color:#000;font-style:normal}
 .hero-meta{position:absolute;z-index:8;left:7.27cqw;top:44.15cqw;margin:0;font-size:.947cqw;color:var(--white)}
 .scroll-enter{position:absolute;z-index:8;left:79.43cqw;top:48.16cqw;font-size:.758cqw;color:var(--white)}
 
