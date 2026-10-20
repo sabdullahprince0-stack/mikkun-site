@@ -216,9 +216,10 @@ body::after{content:"";display:block;height:9.38cqw;background:#050505}
   .hero-creative{left:44.103cqw;top:67.949cqw;font-size:4.576cqw;line-height:normal}
   .hero-creative span,.hero-mobile-kicker,.hero-mobile-meta{display:none!important}
   .hero-mobile-meta{position:absolute;z-index:8;left:7.949cqw;top:67.96cqw;margin:0;font-size:2.179cqw}
-  .hero-portrait-wrap{left:22.564cqw;top:73.077cqw;width:95.385cqw;height:120.513cqw}
+  .hero-portrait-wrap{left:22.564cqw;top:auto;bottom:0;width:95.385cqw;height:120.513cqw}
   .hero-portrait{position:absolute;bottom:0;height:108.718cqw;object-fit:fill;object-position:center bottom}
-  .hero-portrait[src="assets/hero-clean.png"]{left:-12.5cqw;height:114cqw}
+  /* Underlap the divider enough to retain the anchor during existing scroll depth. */
+  .hero-portrait[src="assets/hero-clean.png"]{left:-12.5cqw;bottom:-14px;height:114cqw}
   .hero-manifesto{left:6.154cqw;top:128.205cqw;gap:4.383cqw}
   .hero-manifesto strong{font-size:3.024cqw;line-height:normal;width:auto;white-space:nowrap}
   .hero-manifesto strong:nth-child(2){font-size:3.799cqw;line-height:normal;width:auto}
@@ -334,7 +335,7 @@ body::after{content:"";display:block;height:9.38cqw;background:#050505}
   .hero-logo{font-size:11.3cqw;top:26cqw;left:24cqw}
   .hero-multi{font-size:4.7cqw;top:55cqw}
   .hero-creative{font-size:5.1cqw;left:43cqw;top:69cqw}
-  .hero-manifesto{gap:14px;top:129cqw}
+  .hero-manifesto{gap:14px;top:90cqw}
   .hero-manifesto strong{font-size:clamp(11.5px,3.28cqw,14px);line-height:1.35;letter-spacing:-.02em}
   .hero-manifesto strong:nth-child(2){font-size:clamp(16px,4.7cqw,21px);line-height:1.2}
   .hero-meta.desktop-only{font-size:clamp(8px,2.3cqw,10px);max-width:87%;line-height:1.6}
