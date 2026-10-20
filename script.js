@@ -153,6 +153,44 @@ let lastTime = 0;
 let bounds;
 let scrollPosition = window.scrollY;
 const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
+// One bounded mobile clock: idle, scroll and touch replace the same translate
+// values. The PNG's existing 14px underlap covers the maximum 9px upward depth.
+const mobileDepth = { time: 0, last: 0, frames: 0, press: 0, targetPress: 0, contact: null, paused: false };
+function suspendMobileDepth() {
+  if (!mobile.matches) return;
+  cancelAnimationFrame(frame);
+  frame = 0;
+  mobileDepth.last = 0;
+  mobileDepth.targetPress = 0;
+  mobileDepth.contact = null;
+}
+function updateMobileDepth(time) {
+  if (mobileDepth.paused) { mobileDepth.last = 0; return; }
+  const elapsed = mobileDepth.last ? Math.min(time - mobileDepth.last, 64) : 0;
+  mobileDepth.last = time;
+  mobileDepth.time += elapsed / 1000;
+  mobileDepth.frames++;
+  const t = mobileDepth.time;
+  mobileDepth.press += (mobileDepth.targetPress - mobileDepth.press) * (1 - Math.exp(-elapsed / 110));
+  const press = mobileDepth.press;
+  const progress = Math.max(0, Math.min(1, (scrollPosition - bounds.top) / bounds.height));
+  const values = [
+    [2.2 * Math.sin(t * .31), 1.1 * (1 - Math.cos(t * .37)) - progress * 9 + press * 1.4],
+    [1.3 * Math.sin(t * .29), Math.sin(t * .25) - progress * 2.4 + press * .35],
+    [-1.4 * Math.sin(t * .27) - progress * 3.5, Math.sin(t * .23) - progress * 4.5],
+    [1.2 * Math.sin(t * .33) + progress * 3, -.8 * Math.sin(t * .23) + progress * 3],
+  ];
+  depth.forEach((element, i) => {
+    if (element) element.style.translate = `${values[i][0].toFixed(3)}px ${values[i][1].toFixed(3)}px`;
+  });
+  const lightX = 2 * Math.sin(t * .16);
+  const lightY = 1.5 * Math.sin(t * .13) - progress * 2.5;
+  hero.style.setProperty('--light-x', `${lightX.toFixed(3)}px`);
+  hero.style.setProperty('--light-y', `${lightY.toFixed(3)}px`);
+  const cover = 1 + 2 * Math.max(Math.abs(lightX) / bounds.width, Math.abs(lightY) / (bounds.height * .84)) + .002;
+  hero.style.setProperty('--light-scale', cover.toFixed(5));
+  requestDepth();
+}
 function measure() {
   if (!hero) return;
   const rect = hero.getBoundingClientRect();
@@ -168,6 +206,7 @@ function requestDepth() {
 function updateDepth(time) {
   frame = 0;
   if (!bounds || reduced.matches || !heroVisible || document.hidden) return;
+  if (mobile.matches) { updateMobileDepth(time); return; }
   const blend = 1 - Math.exp(-Math.min(time - (lastTime || time - 16), 64) / 85);
   lastTime = time;
   const canPoint = desktopPointer.matches;
@@ -207,8 +246,37 @@ window.addEventListener('scroll', () => { scrollPosition = window.scrollY; reque
 window.addEventListener('resize', measure, { passive: true });
 desktopPointer.addEventListener('change', () => { pointer.targetX = pointer.targetY = 0; requestDepth(); });
 
+// A short settle, never a gesture recognizer: touch scrolling stays native.
+hero?.addEventListener('pointerdown', event => {
+  if (!mobile.matches || reduced.matches || !heroEntered || event.isPrimary === false ||
+      event.target.closest('a,button,input,select,textarea')) return;
+  mobileDepth.contact = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  mobileDepth.targetPress = 1;
+  requestDepth();
+}, { passive: true });
+window.addEventListener('pointermove', event => {
+  const contact = mobileDepth.contact;
+  if (contact?.id === event.pointerId && Math.hypot(event.clientX - contact.x, event.clientY - contact.y) > 8) {
+    mobileDepth.targetPress = 0;
+    mobileDepth.contact = null;
+  }
+}, { passive: true });
+function releaseHeroPress() { mobileDepth.targetPress = 0; mobileDepth.contact = null; }
+window.addEventListener('pointerup', releaseHeroPress, { passive: true });
+window.addEventListener('pointercancel', releaseHeroPress, { passive: true });
+mobile.addEventListener('change', () => {
+  cancelAnimationFrame(frame); frame = 0; lastTime = 0;
+  mobileDepth.last = 0;
+  releaseHeroPress();
+  // Discard the previous breakpoint's offsets before its own depth calculation.
+  depth.forEach(element => element?.style.removeProperty('translate'));
+  ['--light-x', '--light-y', '--light-scale', '--ink-angle', '--scratch-x'].forEach(property => hero?.style.removeProperty(property));
+  measure();
+});
+
 async function enterHero() {
   if (!hero || reduced.matches) { heroEntered = true; return; }
+  if (mobile.matches) { heroEntered = false; suspendMobileDepth(); }
   const entrants = hero.querySelectorAll('[data-reveal]:not([data-reveal="copy"]), .hero-manifesto strong, .logo-scratches i');
   entrants.forEach(element => element.setAttribute('data-motion-pending', ''));
   let timer;
@@ -257,6 +325,9 @@ function stopMotion() {
   heroEntered = true;
   cancelAnimationFrame(frame);
   frame = 0;
+  mobileDepth.last = 0;
+  mobileDepth.press = 0;
+  releaseHeroPress();
   pointer.x = pointer.y = pointer.targetX = pointer.targetY = 0;
   depth.forEach(element => element?.style.removeProperty('translate'));
   ['--light-x','--light-y','--light-scale','--ink-angle','--scratch-x'].forEach(p=>hero?.style.removeProperty(p));
@@ -268,15 +339,38 @@ reduced.addEventListener('change', () => {
 document.addEventListener('visibilitychange', () => {
   active.forEach(animation => document.hidden ? animation.pause() : animation.play());
   document.body.classList.toggle('motion-suspended', document.hidden);
+  if (document.hidden) suspendMobileDepth();
   if (!document.hidden) { lastTime = 0; requestDepth(); }
 });
 if (hero && 'IntersectionObserver' in window) {
   new IntersectionObserver(([entry]) => {
     heroVisible = entry.isIntersecting;
     hero.classList.toggle('hero-is-visible', heroVisible);
+    if (!heroVisible) suspendMobileDepth();
     if (heroVisible) requestDepth();
   }).observe(hero);
 }
+// Read/replay hooks for local review; no production controls or layout changes.
+window.mikkunMobileHero = {
+  get state() { return { mobile: mobile.matches, reduced: reduced.matches, visible: heroVisible,
+    hidden: document.hidden, paused: mobileDepth.paused, entered: heroEntered,
+    time: mobileDepth.time, frames: mobileDepth.frames, press: mobileDepth.press, scheduled: !!frame }; },
+  setPaused(paused) {
+    mobileDepth.paused = !!paused;
+    if (paused) suspendMobileDepth();
+    else { mobileDepth.last = 0; requestDepth(); }
+  },
+  replay() {
+    if (!mobile.matches) return;
+    active.forEach(animation => { if (animation.id.startsWith('hero:')) animation.cancel(); });
+    depth.forEach(element => element?.style.removeProperty('translate'));
+    ['--light-x', '--light-y', '--light-scale'].forEach(property => hero?.style.removeProperty(property));
+    mobileDepth.time = mobileDepth.last = mobileDepth.press = 0;
+    mobileDepth.paused = false;
+    releaseHeroPress();
+    enterHero();
+  },
+};
 measure();
 observeReveals();
 enterHero();

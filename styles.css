@@ -314,6 +314,8 @@ body::after{content:"";display:block;height:9.38cqw;background:#050505}
   .mobile-footer div{display:flex;justify-content:space-between;margin-top:7.18cqw;color:#777;font-size:1.872cqw}
 
   .hero-gradient::after{animation-duration:24s}
+  /* Mobile drift is written once per frame; avoid a second easing clock. */
+  .hero .hero-gradient{transition:none}
   @keyframes gradient-bloom-mobile{
     0%,100%{opacity:0;transform:translate3d(0,0,0) scale(1)}
     50%{opacity:.14;transform:translate3d(0,-1%,0) scale(1.035)}
