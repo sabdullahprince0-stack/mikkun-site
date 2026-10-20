@@ -7,3 +7,8 @@
 .portfolio-media.is-video-active .portfolio-media__toggle{top:10px;left:10px;translate:none;min-width:80px}
 .portfolio-media__toggle:focus-visible{outline:2px solid #f1ece5;outline-offset:4px}
 .portfolio-media__status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:760px){
+ .portfolio-media__toggle{min-width:112px;min-height:48px;font-size:12px;padding:14px 18px;touch-action:manipulation}
+ .portfolio-media.is-video-active .portfolio-media__toggle{top:10px;left:10px;min-width:88px;min-height:44px;font-size:11px;padding:12px}
+ .portfolio-media.is-video-active{transform:none!important;rotate:none!important;translate:none!important}
+}

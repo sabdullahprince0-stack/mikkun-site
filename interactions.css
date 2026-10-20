@@ -75,7 +75,20 @@
  .motion-route__caption{bottom:12vh;font-size:11vw}
 }
 @media(prefers-reduced-motion:reduce){
+ /* Keep phone controls usable without hover, including gallery navigation. */
  .motion-target,.motion-magnet,.motion-chapter,.hero-gradient,.hero-logo,.logo-scratches{translate:none!important;rotate:none!important;scale:none!important;transition:none!important}
  .motion-target img{scale:none!important;clip-path:none!important;transition:none!important}
  .motion-cursor,.motion-route,.motion-progress,.motion-measure,.motion-preview{display:none!important}.db-wall::after{opacity:0!important}
+}
+@media(max-width:760px){
+ a,button{ -webkit-tap-highlight-color:transparent;touch-action:manipulation}
+ .motion-magnet:active{scale:.98}
+ .motion-gallery button{min-width:48px;min-height:48px;font-size:12px}
+ .motion-gallery__stage{inset:84px 16px 170px}
+ .motion-gallery__footer{bottom:max(20px,env(safe-area-inset-bottom));gap:16px;line-height:1.6}
+ .motion-gallery__caption{font-size:12px}
+ .motion-gallery__nav{gap:20px}
+ .motion-route__caption{bottom:calc(16vh + env(safe-area-inset-bottom));font-size:clamp(32px,10vw,48px);letter-spacing:-.035em}
+ .mobile-menu a:active,.case-menu a:active{color:var(--red);background:#ffffff08}
+ .project-link:focus-visible,.side-quest-enter:focus-visible,.menu-toggle:focus-visible{outline:2px solid var(--red);outline-offset:4px}
 }

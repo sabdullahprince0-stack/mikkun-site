@@ -318,4 +318,81 @@
  .side-contact .case-copy{font-size:11px;max-width:100%}.contact-email{font-size:12px;margin-top:25px;padding-bottom:6px}.case-socials{font-size:8px;gap:14px;margin-top:22px}
  .side-contact .case-bottom{margin-top:45px}
 }
+/* Phone reading rhythm and intentional touch-sized presentation. */
+@media(max-width:760px){
+ .case-page .case-header{margin-inline:20px;padding-block:12px;gap:10px 12px}
+ .case-page .case-brand{font-size:18px;min-height:44px;display:inline-flex;align-items:center}
+ .case-page .case-menu-toggle{font-size:11px;min-width:48px;min-height:44px;padding:8px}
+ .case-page .home-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font-size:10px;padding:10px 14px}
+ .case-menu{position:fixed;inset:116px 16px auto;padding:12px 20px;max-height:calc(100dvh - 140px);overflow:auto;gap:0}
+ .case-menu a{display:flex;align-items:center;min-height:52px;font-size:24px;border-bottom:1px solid #333}
+ .case-menu a:last-child{border-bottom:0}
+ .case-page .breadcrumb{font-size:9px;line-height:1.6;overflow-wrap:anywhere}
+ .case-page .case-hero,.case-page .case-section,.case-page .case-next{min-height:0;padding:44px 20px 48px}
+ .case-page .case-label{font-size:10px;line-height:1.6;letter-spacing:.035em}
+ .case-page .case-role{font-size:10px;line-height:1.7}
+ .case-page:not(.haniyah) .case-copy{font-size:14px;line-height:1.75;max-width:100%}
+ .case-page .micro{font-size:10px;line-height:1.75}
+ .case-page .visual figcaption{font-size:10px;line-height:1.6}
+ .case-page h2{margin:26px 0;line-height:1.1}
+ .case-page .text-link{display:inline-flex;align-items:center;min-height:44px;font-size:11px;margin-top:20px}
+ .woodstones .wood-hero-media{margin-top:36px;gap:28px 24px}
+ .woodstones .wood-live{margin-top:28px}
+ .woodstones .wood-facts dt{font-size:9px;line-height:1.5}
+ .woodstones .wood-facts dd{font-size:12px;line-height:1.5}
+ .woodstones .wood-overview .word-band{margin-top:32px;font-size:clamp(14px,4.6cqw,20px)}
+ .woodstones .mobile-note{margin-top:32px!important}
+ .woodstones .process-images{margin-top:36px;gap:28px}
+ .woodstones .wood-showcase .visual{width:88%;margin-top:32px}
+ .case-page .role-section .word-band{font-size:13px;line-height:1.6;gap:16px}
+ /* Keep the whole link tappable while its entry translate settles. */
+ .case-page .next-project{padding-bottom:64px;clip-path:none!important}
+ .case-page .next-project>p{font-size:10px;line-height:1.7}
+ .case-page .next-project h2{font-size:clamp(30px,10.8cqw,47px);overflow-wrap:anywhere}
+ .case-page .next-arrow{right:4px;bottom:14px;font-size:38px}
+ .case-page .case-bottom{align-items:center;gap:14px;margin-top:24px}
+ .case-page .case-bottom small{font-size:8px;max-width:55%;line-height:1.8}
+ .case-page .back-home{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px;font-size:10px}
+ .dbasement .db-hero .case-role{text-align:left;margin-top:20px}
+ .dbasement .db-hero>.case-copy{margin:24px 0 32px}
+ .dbasement .db-hero-posters{gap:12px;padding:0 3px}
+ .dbasement .stickers{font-size:9px;line-height:1.6;gap:8px;flex-wrap:wrap}
+ .dbasement .db-overview .case-copy{max-width:100%}
+ .dbasement .db-overview .poster{position:relative;inset:auto;width:44%;margin:28px 4px 0 auto}
+ .dbasement .db-overview .micro{max-width:100%;margin-top:24px}
+ .dbasement .type-strips{font-size:clamp(9px,2.6cqw,12px);gap:8px;display:grid;grid-template-columns:1fr 1fr}
+ .dbasement .type-strips span{padding:9px 6px;text-align:center}
+ .dbasement .poster-wall{margin:32px 5px 8px;gap:28px 20px}
+ .dbasement .motion-layout{grid-template-columns:minmax(0,1fr);gap:28px;margin-top:30px}
+ .dbasement .motion-still{width:80%;justify-self:center;aspect-ratio:.75}
+ .dbasement .motion-topics{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;line-height:1.5;margin-bottom:20px}
+ .dbasement .motion-topics span{border-bottom:1px solid #7776;padding-bottom:6px}
+ .dbasement .db-role h2{margin-bottom:32px}
+ .dbasement .db-role .word-band{font-size:18px;line-height:1.5;gap:16px;margin-bottom:28px}
+ .haniyah .case-hero>.micro{display:block;font-size:10px;line-height:1.7;margin-top:24px}
+ .case-page.haniyah .case-copy{max-width:100%;font-size:16px;line-height:1.75}
+ .haniyah .hani-landing{margin-top:32px!important}
+ .haniyah .deliverables{padding:24px 20px;margin-top:32px}
+ .haniyah .deliverables ul{font-size:15px;line-height:1.9}
+ .haniyah .deliverables .micro:last-child{font-size:10px}
+ .haniyah .product-pair{gap:36px;margin:32px 0}
+ .haniyah .product-pair .visual:nth-child(2){margin-left:10px;margin-right:0}
+ .haniyah .luxury-pills{font-size:10px;gap:12px;line-height:1.5}
+ .haniyah .hani-role .word-band{font-size:14px;line-height:1.8;padding:20px 16px}
+ .haniyah .case-next{min-height:0}
+ .archive-page .archive-grid{gap:28px 20px;margin-top:32px}
+ .archive-page .side-hero .case-copy{margin-bottom:28px}
+ .archive-page .side-racket h2{font-size:7.8cqw;line-height:1.15}
+ .archive-page .side-music .case-copy{max-width:32ch}
+ .archive-page .music-archive{grid-template-columns:minmax(0,1fr);gap:32px;margin:32px 12px 0;align-items:start}
+ .archive-page .music-card,.archive-page .music-card.featured,.archive-page .music-card:nth-child(4){grid-column:auto;grid-row:auto;width:100%;margin:0;aspect-ratio:.7;transform:rotate(-1deg)}
+ .archive-page .music-card:nth-child(even){transform:rotate(1deg)}
+ .archive-page .music-card.featured{transform:none}
+ .archive-page .music-card figcaption{font-size:12px;padding:12px;gap:5px;margin:0}
+ .archive-page .music-card figcaption span{font-size:10px;line-height:1.6}
+ .archive-page .archive-note{font-size:10px;line-height:1.8}
+ .archive-page .contact-email{font-size:clamp(12px,3.5cqw,16px);min-height:44px;display:inline-flex;align-items:center;overflow-wrap:anywhere}
+ .case-page .case-socials{flex-wrap:wrap;gap:4px 18px;font-size:10px}
+ .case-socials a{min-height:44px;display:inline-flex;align-items:center}
+}
 @media(prefers-reduced-motion:reduce){.case-page{scroll-behavior:auto}.case-page *, .case-page *::before,.case-page *::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

@@ -7,6 +7,11 @@
   const luxury = document.body.classList.contains('haniyah');
   const venue = document.body.classList.contains('dbasement');
   const archive = document.body.classList.contains('archive-page');
+  // The phone's running card opens the existing fitness section, including after resize.
+  const runningCard=document.querySelector('.quest-running');
+  const originalRunningHref=runningCard?.getAttribute('href');
+  function syncPhoneLink(){if(runningCard)runningCard.setAttribute('href',small.matches?'side-quests.html#running':originalRunningHref);}
+  syncPhoneLink();small.addEventListener('change',syncPhoneLink);
   const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
   const ease = luxury ? 'cubic-bezier(.18,.55,.2,1)' : 'cubic-bezier(.18,.76,.2,1)';
   const active = new Set();
@@ -80,7 +85,7 @@
       if(reduce.matches)return;el.classList.add('is-pressed');
       if(e.pointerType!=='mouse'){const r=register(el);el.style.setProperty('--mx',`${(e.clientX-r.left)/r.width*100}%`);el.style.setProperty('--my',`${(e.clientY-r.top)/r.height*100}%`);}
     },{passive:true});
-    el.addEventListener('pointerup',()=>{el.classList.remove('is-pressed');if(!fine.matches&&!reduce.matches)animate(el,[{scale:'.987'},{scale:'1.008'},{scale:'1'}],{duration:420,id:'paper-release'});},{passive:true});
+    el.addEventListener('pointerup',()=>{el.classList.remove('is-pressed');if(!fine.matches&&!reduce.matches)animate(el,[{scale:'.987'},{scale:small.matches?'1.004':'1.008'},{scale:'1'}],{duration:small.matches?260:420,id:'paper-release'});},{passive:true});
     el.addEventListener('pointercancel',()=>release(el),{passive:true});
     el.addEventListener('focus',()=>{if(!reduce.matches&&el.matches(':focus-visible')){el.classList.add('is-tracking');el.style.setProperty('--iy','-3px');}});
     el.addEventListener('blur',()=>release(el));
@@ -175,8 +180,8 @@
     route.classList.add('is-active');route.dataset.personality=saved.personality;route.querySelector('.motion-route__caption').textContent=saved.title;
     const sheets=[...route.querySelectorAll('i')];
     sheets.forEach(el=>el.style.transformOrigin='top');
-    const duration=saved.personality==='luxury'?800:saved.personality==='venue'?360:580;
-    sheets.forEach((el,i)=>animate(el,[{transform:'scaleY(1)'},{transform:'scaleY(0)'}],{duration,delay:(2-i)*60,fill:'both',id:'arrival-sheet'}));
+    const duration=(saved.personality==='luxury'?800:saved.personality==='venue'?360:580)*(small.matches?.8:1);
+    sheets.forEach((el,i)=>animate(el,[{transform:'scaleY(1)'},{transform:'scaleY(0)'}],{duration,delay:(2-i)*(small.matches?44:60),fill:'both',id:'arrival-sheet'}));
     const caption=route.querySelector('.motion-route__caption');animate(caption,[{opacity:1,translate:'0 0'},{opacity:0,translate:'0 -24px'}],{duration:duration*.7,fill:'both',id:'arrival-title'});
     setTimeout(clearRoute,duration+150);
   }
@@ -191,7 +196,7 @@
     const [title,personality]=names[key];
     route.dataset.personality=personality;route.querySelector('.motion-route__caption').textContent=title;route.classList.add('is-active');cursor.classList.remove('is-visible');
     try{sessionStorage.setItem('mikkun:arrival',JSON.stringify({path:url.pathname,title,personality,time:Date.now()}));}catch{}
-    const duration=personality==='luxury'?560:personality==='venue'?280:410;
+    const duration=(personality==='luxury'?560:personality==='venue'?280:410)*(small.matches?.8:1);
     const sheets=[...route.querySelectorAll('i')];sheets.forEach(el=>el.style.transformOrigin='bottom');
     const animations=sheets.map((el,i)=>animate(el,[{transform:'scaleY(0)'},{transform:'scaleY(1)'}],{duration,delay:i*45,fill:'both',id:'departure-sheet'}));
     animate(route.querySelector('.motion-route__caption'),[{opacity:0,translate:'0 25px'},{opacity:1,translate:'0 0'}],{duration:220,delay:duration*.6,fill:'both',id:'departure-title'});
