@@ -333,7 +333,9 @@ body::after{content:"";display:block;height:9.38cqw;background:#050505}
   .mobile-menu{inset:72px 16px auto;padding:12px 20px;max-height:calc(100dvh - 96px);overflow:auto;border:1px solid #444}
   .mobile-menu a{min-height:52px;display:flex;align-items:center;font-size:24px;border-bottom:1px solid #333}
   .mobile-menu a:last-child{border-bottom:0}
-  .hero-gradient{top:16.667cqw}
+  /* Keep the original gradient size; carry its final red through the hero edge.
+     The extra 8px stays clipped and covers the existing mobile light drift. */
+  .hero-gradient{top:16.667cqw;height:calc(100% - 16.667cqw + 8px);background-size:100% 176.923cqw;background-position:center top;background-color:#920000}
   .hero-logo{font-size:11.3cqw;top:26cqw;left:24cqw}
   .hero-multi{font-size:4.7cqw;top:55cqw}
   .hero-creative{font-size:5.1cqw;left:43cqw;top:69cqw}
