@@ -1,0 +1,38 @@
+/* Finished-site captures only. Shared portfolio layout, type and motion stay in project-pages.css. */
+.haniyah .hani-launch{display:flex;align-items:center;flex-wrap:wrap;gap:1.5cqw 2.5cqw;margin:2.5cqw 0 3cqw}
+.haniyah .hani-live-link{color:#795322;border-color:var(--case-gold);font-weight:700;letter-spacing:.1em;min-height:44px;padding:12px 0;margin-top:0}
+.haniyah .hani-live-link:hover{color:#171412}
+.haniyah .hani-launch .micro{font-size:.85cqw;letter-spacing:.06em}
+.haniyah .hani-capture{background:#fbf7ef;aspect-ratio:auto}
+.haniyah .hani-capture picture{display:block;height:auto;overflow:hidden}
+.haniyah .hani-capture img{position:relative;z-index:1;isolation:isolate;display:block;width:100%;height:auto;object-fit:contain}
+.haniyah .hani-capture figcaption{position:static;margin:0;padding:14px 16px;background:#eee5d5;color:#705b46;font-size:clamp(10px,.8cqw,13px);letter-spacing:.06em;line-height:1.6}
+.haniyah .hani-capture.hani-landing{border:.7cqw solid #eee5d5}
+.haniyah .hani-capture.hani-landing figcaption{padding:14px 8px 6px}
+.haniyah .hani-hero>.case-copy+.case-copy{margin-top:-1cqw}
+.haniyah .hani-hero .hani-capture picture{aspect-ratio:1486/880}
+.haniyah .product-pair{align-items:start}
+.haniyah .product-pair .hani-capture picture{aspect-ratio:1200/976}
+.haniyah .hani-collections picture{aspect-ratio:1486/860}
+.haniyah .hani-fragrance picture{aspect-ratio:1486/1100}
+.haniyah .hani-website-copy{margin:3cqw 0 4cqw}
+.haniyah .hani-catalog .hani-website-copy .case-copy{margin-top:0}
+.haniyah .hani-catalog .hani-website-copy .case-copy+.case-copy{margin-top:1.8cqw}
+.haniyah .hani-site-map{margin-top:2cqw;max-width:90cqw;line-height:1.9}
+.haniyah .hani-role .hani-live-link{margin-top:2cqw}
+@media(max-width:760px){
+ .haniyah .hani-launch{gap:12px 24px;margin:0 0 32px}
+ .haniyah .hani-launch .micro{font-size:10px}
+ .haniyah .hani-hero>.case-copy+.case-copy{margin-top:0}
+ .haniyah .hani-capture.hani-landing{border-width:4px}
+ .haniyah .hani-hero .hani-capture picture{aspect-ratio:430/900}
+ .haniyah .product-pair .hani-capture picture{aspect-ratio:430/900}
+ .haniyah .product-pair .hani-capture:nth-child(2){margin-left:0}
+ .haniyah .hani-collections picture{aspect-ratio:430/1041}
+ .haniyah .hani-fragrance picture{aspect-ratio:430/1430}
+ .haniyah .hani-capture figcaption,.haniyah .hani-capture.hani-landing figcaption{font-size:10px;padding:12px 10px}
+ .haniyah .hani-website-copy{margin:32px 0}
+ .haniyah .hani-catalog .hani-website-copy .case-copy+.case-copy{margin-top:24px}
+ .haniyah .hani-site-map{margin-top:24px;max-width:100%;font-size:10px}
+ .haniyah .hani-role .hani-live-link{margin-top:24px}
+}
