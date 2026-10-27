@@ -1,0 +1,19 @@
+/* The photograph remains the layout and accessibility source of truth. */
+.about-photo .particle-portrait {
+  position: absolute;
+  display: block;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.about-photo.particles-ready img {
+  opacity: 0;
+}
+
+.about-photo .particle-portrait[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .about-photo .particle-portrait { display: none; }
+  .about-photo.particles-ready img { opacity: 1; }
+}
