@@ -1,0 +1,11 @@
+/* Current launched-site captures; the shared case-study styles own the layout. */
+.woodstones .wood-capture img{height:auto;object-fit:contain}
+.woodstones .wood-live .screen{aspect-ratio:auto}
+.woodstones .wood-capture figcaption{position:static;margin:0;padding:12px 2px 2px;white-space:normal;font-size:clamp(9px,.85cqw,13px);line-height:1.6;color:#4b4740}
+.woodstones .process-images .wood-capture{aspect-ratio:auto;margin-bottom:0}
+.wood-mobile-pair{grid-column:2;grid-row:1/5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.8cqw;align-items:start}
+.woodstones .wood-mobile-pair .wood-capture{grid-column:auto;grid-row:auto;aspect-ratio:auto;width:100%;margin:0}
+@media(max-width:760px){
+  .wood-mobile-pair{margin-top:32px;gap:16px}
+  .woodstones .wood-capture figcaption{font-size:8px;padding-top:10px;line-height:1.7}
+}
