@@ -61,12 +61,11 @@ picture{display:block;width:100%;height:100%}
 .logo-scratches i:nth-child(3){top:3.33cqw}
 .hero-logo,.hero-multi,.hero-creative{pointer-events:none}
 .hero-multi,.hero-creative{position:absolute;white-space:nowrap;font-family:var(--font-grunge);font-weight:400;line-height:normal}
-.hero-multi{z-index:3;left:7.81cqw;top:12.65cqw;font-size:4.45cqw;color:var(--red)}
+.hero-multi{z-index:6;left:7.81cqw;top:12.65cqw;font-size:4.45cqw;color:var(--red)}
 .hero-creative{z-index:6;left:56.33cqw;top:20.92cqw;font-size:3.875cqw;color:#050505}
-.hero-portrait-wrap{position:absolute;z-index:5;left:31.16cqw;top:18.57cqw;width:37.69cqw;height:41.79cqw;pointer-events:none;transform:translateY(var(--scroll-y,0))}
-.hero-portrait{object-fit:fill;object-position:center top}
-/* Fit the new pose's transparent canvas inside the existing animated wrapper. */
-.hero-portrait[src="assets/hero-clean.png"]{position:absolute;left:-8cqw;bottom:0;width:auto;height:50cqw;object-fit:contain}
+/* Keep the supplied cutout proportional, with enough underlap for scroll depth. */
+.hero-portrait-wrap{position:absolute;z-index:5;left:31.4cqw;bottom:-2cqw;width:38.685cqw;height:41.3cqw;pointer-events:none;transform:translateY(var(--scroll-y,0))}
+.hero-portrait{object-fit:contain;object-position:center bottom}
 .hero-manifesto{position:absolute;z-index:8;left:7.2cqw;top:32.3cqw;display:grid;gap:.78cqw;color:var(--white)}
 .hero-manifesto strong{font-size:1.689cqw;line-height:1.04}
 .hero-manifesto strong:nth-child(2){font-size:2.122cqw}
@@ -216,14 +215,12 @@ body::after{content:"";display:block;height:9.38cqw;background:#050505}
   .hero-creative{left:44.103cqw;top:67.949cqw;font-size:4.576cqw;line-height:normal}
   .hero-creative span,.hero-mobile-kicker,.hero-mobile-meta{display:none!important}
   .hero-mobile-meta{position:absolute;z-index:8;left:7.949cqw;top:67.96cqw;margin:0;font-size:2.179cqw}
-  .hero-portrait-wrap{left:22.564cqw;top:auto;bottom:0;width:95.385cqw;height:120.513cqw}
-  .hero-portrait{position:absolute;bottom:0;height:108.718cqw;object-fit:fill;object-position:center bottom}
-  /* Underlap the divider enough to retain the anchor during existing scroll depth. */
-  .hero-portrait[src="assets/hero-clean.png"]{left:-12.5cqw;bottom:-14px;height:114cqw}
+  .hero-portrait-wrap{left:0;bottom:-14px;width:calc((123cqw + 14px) * .936667);height:calc(123cqw + 14px)}
   .hero-manifesto{left:6.154cqw;top:128.205cqw;gap:4.383cqw}
   .hero-manifesto strong{font-size:3.024cqw;line-height:normal;width:auto;white-space:nowrap}
   .hero-manifesto strong:nth-child(2){font-size:3.799cqw;line-height:normal;width:auto}
   .hero-manifesto br{display:none!important}
+  .hero-manifesto span.mobile-only{display:inline!important}
   .hero-meta.desktop-only{display:block!important;left:5.641cqw;top:165.641cqw;font-size:2.021cqw}
   .scroll-enter-mobile{position:absolute;z-index:8;left:73.333cqw;top:181.538cqw;font-size:1.905cqw;color:#fff}
 
@@ -336,13 +333,13 @@ body::after{content:"";display:block;height:9.38cqw;background:#050505}
   /* Keep the original gradient size; carry its final red through the hero edge.
      The extra 8px stays clipped and covers the existing mobile light drift. */
   .hero-gradient{top:16.667cqw;height:calc(100% - 16.667cqw + 8px);background-size:100% 176.923cqw;background-position:center top;background-color:#920000}
-  .hero-logo{font-size:11.3cqw;top:26cqw;left:24cqw}
-  .hero-multi{font-size:4.7cqw;top:55cqw}
-  .hero-creative{font-size:5.1cqw;left:43cqw;top:69cqw}
-  .hero-manifesto{gap:14px;top:90cqw}
-  .hero-manifesto strong{font-size:clamp(11.5px,3.28cqw,14px);line-height:1.35;letter-spacing:-.02em}
-  .hero-manifesto strong:nth-child(2){font-size:clamp(16px,4.7cqw,21px);line-height:1.2}
-  .hero-meta.desktop-only{font-size:clamp(8px,2.3cqw,10px);max-width:87%;line-height:1.6}
+  .hero-logo{font-size:14cqw;top:22.5cqw;left:4cqw}
+  .hero-multi{font-size:4.7cqw;left:5.13cqw;top:55cqw}
+  .hero-creative{font-size:5.1cqw;left:32cqw;top:69cqw}
+  .hero-manifesto{left:5.13cqw;gap:6px;top:154cqw}
+  .hero-manifesto strong{font-size:clamp(11.5px,3.85cqw,16px);line-height:1.35;letter-spacing:-.02em}
+  .hero-manifesto strong:nth-child(2){font-size:clamp(11.5px,3.85cqw,16px);line-height:1.35}
+  .hero-meta.desktop-only{top:172cqw;font-size:clamp(8px,2.3cqw,10px);max-width:87%;line-height:1.6}
   .scroll-enter-mobile{font-size:9px;left:auto;right:20px;min-height:44px;display:flex;align-items:center;top:178cqw}
   .manifesto{height:auto;padding:52px 20px 40px}
   .manifesto h2{position:relative;inset:auto;width:auto;font-size:clamp(26px,7.7cqw,34px);line-height:1.3}
