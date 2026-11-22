@@ -415,6 +415,34 @@ body::after{content:"";display:block;height:9.38cqw;background:#050505}
   .mobile-footer div{gap:20px;font-size:9px;line-height:1.7;margin-top:20px}
 }
 
+/* Training follows About, using normal flow to keep the certificate uncropped. */
+.certifications{position:relative;background:#151515;padding:clamp(40px,5.4cqw,80px) 7.27%;border-top:1px solid #ffffff12}
+.certifications .section-inner{height:auto}
+.certifications .eyebrow{font-size:clamp(10px,1.023cqw,15px)}
+.certifications h2{margin:24px 0 36px;font-family:var(--font-display);font-size:clamp(26px,3.5cqw,52px);line-height:1.1}
+.certifications h2 span{color:var(--red)}
+.certificate-card{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(24px,4cqw,60px);align-items:center}
+.certificate-preview{display:block;min-width:0;padding:8px;border:1px solid #ffffff26;background:var(--black);transition:border-color .3s ease,transform .5s var(--motion-ease,ease),box-shadow .5s ease}
+.certificate-preview img{width:100%;height:auto;object-fit:contain}
+/* Preserve the certificate's original pixels when a browser injects image enhancement. */
+.certificate-preview img{filter:none!important}
+.certificate-preview:hover{border-color:var(--red);transform:translateY(-4px);box-shadow:0 16px 36px #0005}
+.certificate-details{min-width:0}
+.certificate-type{margin:0 0 16px;color:var(--light);font-size:11px;letter-spacing:.08em;line-height:1.6}
+.certificate-details h3{margin:0 0 20px;font-family:var(--font-display);font-size:clamp(24px,2.4cqw,36px);line-height:1.2}
+.certificate-issuer{margin:0 0 10px;font-size:clamp(14px,1.2cqw,18px);line-height:1.6}
+.certificate-date{margin:0;color:var(--light);font-size:14px;line-height:1.7}
+.certificate-link{display:inline-flex;align-items:center;flex-wrap:wrap;gap:12px;min-height:48px;margin-top:24px;padding:10px 0;border-bottom:1px solid var(--red);font-size:14px;transition:color .2s ease,border-color .2s ease}
+.certificate-link:hover{color:var(--red);border-color:var(--white)}
+.certificate-link-format{color:var(--light);font-size:10px}
+.certificate-preview:focus-visible,.certificate-link:focus-visible{outline:2px solid var(--red);outline-offset:6px}
+@media(max-width:900px){
+  .certifications{padding:40px 20px 48px}
+  .certifications h2{margin:24px 0 28px;max-width:22ch;font-size:clamp(20px,6.2cqw,44px)}
+  .certificate-card{grid-template-columns:minmax(0,1fr);gap:28px}
+  .certificate-details h3{max-width:24ch;font-size:clamp(20px,5.6cqw,30px)}
+}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   [data-reveal],[data-motion-pending]{opacity:1!important;clip-path:none!important;transform:none!important;translate:none!important}
